@@ -1,0 +1,9 @@
+{
+  "name": "go-file",
+  "description": "Template pequeno para criar um \u00fanico arquivo Go",
+  "variables": [
+    "ProjectName",
+    "Author",
+    "Package"
+  ]
+}

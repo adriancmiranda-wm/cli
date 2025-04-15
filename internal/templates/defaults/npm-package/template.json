@@ -1,0 +1,8 @@
+{
+  "name": "npm-package",
+  "description": "Template NPM usando bun",
+  "variables": [
+    "ProjectName",
+    "Author"
+  ]
+}

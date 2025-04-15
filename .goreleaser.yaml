@@ -1,0 +1,81 @@
+project_name: wm
+
+# Hooks antes do build
+before:
+  hooks:
+    - go mod tidy
+
+# Builds multiplataforma
+builds:
+  - id: wm
+    main: ./main.go
+    binary: wm
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w
+      - -X main.Version={{.Version}}
+      - -X main.Commit={{.Commit}}
+      - -X main.Date={{.Date}}
+
+# Arquivos incluídos nos releases
+archives:
+  - id: default
+    format: tar.gz
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
+    files:
+      - LICENSE*
+      - README*
+      - CHANGELOG*
+      - completions/*
+      - dist/config/*
+      - none*
+
+# Checksum dos arquivos gerados
+checksum:
+  name_template: "checksums.txt"
+
+# Snapshot builds
+snapshot:
+  name_template: "{{ .Version }}-SNAPSHOT-{{ .ShortCommit }}"
+
+# Changelog automático (git)
+changelog:
+  skip: false
+  sort: asc
+  use: git
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - '^chore:'
+
+# Autocompletes
+brews:
+  - name: wm
+    homepage: "https://github.com/adriancmiranda-wm/cli"
+    description: "WM CLI tool"
+    install: "bin.install 'wm'"
+    test: "system '#{bin}/wm --version'"
+    taps:
+      - github: adriancmiranda-wm/homebrew-tap
+
+# Completions automáticas
+completions:
+  bash:
+    name_template: "{{ .ProjectName }}.bash"
+  fish:
+    name_template: "{{ .ProjectName }}.fish"
+  zsh:
+    name_template: "_{{ .ProjectName }}"
+
+# Configuração de token para releases
+env_files:
+  github_token: ~/.config/goreleaser/github_token

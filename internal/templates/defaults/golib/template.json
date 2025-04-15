@@ -1,0 +1,8 @@
+{
+  "name": "golib",
+  "description": "Template b\u00e1sico de biblioteca Go",
+  "variables": [
+    "ProjectName",
+    "Author"
+  ]
+}
